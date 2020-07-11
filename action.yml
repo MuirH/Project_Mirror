@@ -1,0 +1,20 @@
+name: 'Project Sync'
+description: 'Action for mirroring a repository in another location (Bitbucket, GitHub, GitLab, …) using SSH.'
+branding:
+  icon: 'copy'
+  color: 'orange'
+inputs:
+  src:
+    description: 'SSH URL of the source repo.'
+    required: true
+    default: ''
+  dst:
+    description: 'SSH URL of the destination repo.'
+    required: true
+    default: ''
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.src }}
+    - ${{ inputs.dst }}
