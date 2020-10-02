@@ -1,20 +1,19 @@
-name: 'Project Sync'
-description: 'Action for mirroring a repository in another location (Bitbucket, GitHub, GitLab, …) using SSH.'
+name: "Project Mirror"
+description: "Mirror a project repository to another repository."
 branding:
-  icon: 'copy'
-  color: 'orange'
+  icon: "archive"
+  color: "blue"
 inputs:
-  src:
-    description: 'SSH URL of the source repo.'
+  ssh_private_key:
+    description: "SSH private key for ssh connection to the target repository"
+    required: false
+  target_repo_url:
+    description: "Target url"
     required: true
-    default: ''
-  dst:
-    description: 'SSH URL of the destination repo.'
-    required: true
-    default: ''
+  ssh_username:
+    description: "Username for ssh connection"
+    required: false
+    default: "git"
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.src }}
-    - ${{ inputs.dst }}

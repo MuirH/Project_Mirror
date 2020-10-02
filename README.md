@@ -1,37 +1,49 @@
 # Git 自动同步
 
-利用Github Action，可以方便的同步各个平台的储存库
+利用Github Action，可以方便的同步至各个平台储存库
 
 ## 参数
 
-### `src`
+### `target_repo_url`
 
-**必须** 源储存库的SSH URL
+目标储存库的SSH URL
 
-### `dst`
+## `ssh_private_key`
 
-**必须** 目标储存库的SSH URL
-
-## 环境变量
-
-`SSH_KEY`: 一个可以访问两个存储库的SSH密钥。
+目标储存库的SSH KEY
 
 
 ## 栗子
 
 ```
-name: Sync to Bitbucket Repo
+name: 'GitHub Actions Mirror'
 
-on: [ push, delete, create ]
+on: [push, delete]
 
 jobs:
-  git-mirror:
+  mirror_to_gitee:
     runs-on: ubuntu-latest
     steps:
-      - uses: MuirProject/Project_Sync@v1
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+      - name: 'Checkout'
+        uses: actions/checkout@v1
+      - name: 'Mirror to gitee'
+        uses: MuirProject/Project_Sync@v1.0
         with:
-          src: 'git@github.com:MuirProject/example_repo.git'
-          dst: 'git@bitbucket.org:MuirProject/example_repo.git'
+          target_repo_url:
+            git@gitee.com:becod/test.git
+          ssh_private_key:
+            ${{ secrets.GITEE_KEY }}
+
+  mirror_to_gitlab:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v1
+      - name: 'Mirror to gitlab'
+        uses: MuirProject/Project_Sync@v1.0
+        with:
+          target_repo_url:
+            git@gitlab.com:becod/test.git
+          ssh_private_key:
+            ${{ secrets.GITLAB_KEY }}
 ```
